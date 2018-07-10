@@ -42,6 +42,8 @@ return JsonConvert.DeserializeObject<List<TodoItem>>(data);
         [HttpGet("{id}", Name = "GetTodo")]
         public IActionResult GetById(long id)
         {
+        var data = _client.GetStringAsync($"{GET}/api/Todo/{id}").Result;
+return Content(data, "application/json");
             var item = _context.TodoItems.FirstOrDefault(t => t.Id == id);
             if (item == null)
             {
@@ -55,6 +57,9 @@ return JsonConvert.DeserializeObject<List<TodoItem>>(data);
         [HttpPost]
         public IActionResult Create([FromBody] TodoItem item)
         {
+        var response = _client.PostAsJsonAsync($"{POST}/api/Todo", item).Result;
+var data = response.Content.ReadAsStringAsync().Result;
+return Content(data, "application/json");
             if (item == null)
             {
                 return BadRequest();
