@@ -76,6 +76,8 @@ return Content(data, "application/json");
         [HttpPut("{id}")]
         public IActionResult Update(long id, [FromBody] TodoItem item)
         {
+        var res = _client.PutAsJsonAsync($"{PUT}/api/Todo/{id}", item).Result;
+return new NoContentResult()
             if (item == null || item.Id != id)
             {
                 return BadRequest();
@@ -100,6 +102,8 @@ return Content(data, "application/json");
         [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
+        var res = _client.DeleteAsync($"{DELETE}/api/Todo/{id}").Result;
+return new NoContentResult();
             var todo = _context.TodoItems.FirstOrDefault(t => t.Id == id);
             if (todo == null)
             {
