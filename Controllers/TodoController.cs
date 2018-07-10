@@ -14,6 +14,8 @@ namespace TodoApi.Controllers
     public class TodoController : Controller
     {
         private readonly TodoContext _context;
+        private static readonly HttpClient _client = new HttpClient();
+private static readonly string _remoteUrl = "https://backendappname.azurewebsites.net";
         #endregion
 
         public TodoController(TodoContext context)
@@ -30,6 +32,8 @@ namespace TodoApi.Controllers
         #region snippet_GetAll
         [HttpGet]
         public IEnumerable<TodoItem> GetAll()
+        var data = _client.GetStringAsync($"{GET}/api/Todo").Result;
+return JsonConvert.DeserializeObject<List<TodoItem>>(data);
         {
             return _context.TodoItems.ToList();
         }
