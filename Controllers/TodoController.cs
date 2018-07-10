@@ -20,6 +20,14 @@ private static readonly string _remoteUrl = "https://backendappname.azurewebsite
 
         public TodoController(TodoContext context)
         {
+        public override void OnActionExecuting(ActionExecutingContext context)
+{
+    base.OnActionExecuting(context);
+
+    _client.DefaultRequestHeaders.Accept.Clear();
+    _client.DefaultRequestHeaders.Authorization =
+        new AuthenticationHeaderValue("Bearer", Request.Headers["X-MS-TOKEN-AAD-ACCESS-TOKEN"]);
+}
             _context = context;
 
             if (_context.TodoItems.Count() == 0)
